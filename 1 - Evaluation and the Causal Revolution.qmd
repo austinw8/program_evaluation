@@ -1,0 +1,109 @@
+---
+title: "1 - Evaluation and the Causal Revolution"
+author: "Austin Mangelson"
+format: html
+editor: visual
+---
+
+## [Impact Evaluation in Practice Chapter 1: Why Evaluate?](https://openknowledge.worldbank.org/server/api/core/bitstreams/4659ef23-61ff-5df7-9b4e-89fda12b074d/content)
+
+Measure the impact of a program and see if a program is reaching it's desired outcomes. Receive more funding. Obligation to report to populace. (ex. is clean water actually received by families? Do student test scores actually improve? Are incomes raised as intended?)
+
+Test effectiveness of a program against the absence of a program.
+
+Good example = Mexico's Conditional Cash Transfer Program
+
+1.  test if a program is effective or not
+2.  test alternatives
+3.  improve an existing program
+
+Evaluations address 3 types of questions:
+
+1.  descriptive: processes, condition, organizational relationships, stakeholder views
+2.  normative: is what's taking place should be taking place? assess activities, accomplishing targets?
+3.  cause-and-effect: attribution, what difference does the intervention make?
+
+**Efficacy vs. Effectiveness studies**
+
+*efficacy* = specific conditions, closely controlled
+
+*effectiveness* = "normal" circumstances (usually the concern of policymakers)
+
+Ex Ante simulations = use available data to simulate expected benefits
+
+**Ethics**:
+
+Are impact evaluations ethical? Is it ethical to roll out programs with unknown effects? If a program is known to have effects, it should not be delayed solely for more evaluations.
+
+It's unethical to deny beneficial programs to all qualifying parties. Therefore, the most ethical selection for a study group is randomized
+
+Make evaluations objective, transparent, and reproducible (should be included in pre-analysis plan
+
+## [Statistics vs. data science - Hadley Wickham](https://imstat.org/2014/09/04/data-science-how-is-it-different-to-statistics%E2%80%89/)
+
+steps in a data science project
+
+1.  collect data
+2.  analyze (includes tidying) - spend more time questioning data, not fighting tools)
+3.  communicate (an analysis is useless unless it convinces someone to take action - communicate to people with expertise in other domains, NOT to other data scientists or statisticians)
+
+Stats is a part of data science, but not the whole thing
+
+# [Evaluation and the Causal Revolution](https://evalsp24.classes.andrewheiss.com/content/01-content.html)
+
+*Already taken stats 1 & 2*
+
+[**Data science and public service**]{.underline}
+
+"*To responsibly unleash the power of data to benefit all Americans*" - DJ Patil
+
+Connect databases to prevent mentally ill individuals from being stuck in the prison system - no need for AI, just connecting databases and making data more accessible
+
+There's SO much data out there ([http://us-cities.survey.okfn.org/http://us-cities.survey.okfn.org/](http://us-cities.survey.okfn.org/), <https://datasetsearch.research.google.com/>)!! How do we use this data to make the world better? Analyze it!!
+
+What is statistics? "*collecting and analyzing data from a representative sample in order to make inferences about a whole population*" - it's making inferences
+
+What is data science? "turning raw data into understanding, insight, and knowledge"\
+1. collect\
+2. analyze\
+3. communicate
+
+What is "program evaluation"? measuring effects of social program on society - data science + causal inference
+
+[**Evidence, evaluation, and causation**]{.underline}
+
+We need human wisdom and experience AND data and algorithms, not just one or the other
+
+RAND health insurance study - reduced "inappropriate and unneeded medical care" (doctors/hospitals save money), but also reduced appropriate and needed medical care (cheaper for insurance/companies)
+
+Types of evaluation: \
+ - needs assessment\
+ - design and theory assessment\
+ - process evaluation and monitoring\
+**- impact evaluation -** what we're doing in this class\
+ - efficiency evaluation (CBA)
+
+We will be making **logic models**
+
+Godwin's law - the longer an online discussion gets, the more probable there will be a comparison to Nazis, Hitler, etc.
+
+Godwin's law for Statistics - correlation does not imply causation... except when it does... this phrase is useless and kills discussion. Causation is hard to find, BUT it is find-able
+
+How do we figure out correlation? Math and statistics\
+How do we figure out causation? Philosophy, not math.
+
+*Causality isn't achieved, it's approached. It's not binary, it's a continuum*
+
+**X causes Y if...**\
+... we intervene and change X without changing anything else and Y changes\
+... Y "listens" to X - "*a variable X is a cause of a variable Y if Y in any way relies on X for its value... X is a cause of Y if Y listens to X and decides its value in response to what it hears*"\
+Y doesn't have to listen to only X
+
+causation = correlation + time order + non-spuriousness
+
+**DAG (Directed Acyclic Graph)**\
+graphical model of the process that generates the data\
+maps your philosophical model\
+fancy math ("do-calculus") tells you what to control for to isolate and idnetify causation
+
+[**Class details**]{.underline}
