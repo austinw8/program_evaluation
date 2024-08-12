@@ -1,0 +1,235 @@
+---
+title: "2 - Regression and Inference"
+author: "Austin Mangelson"
+format: html
+editor: visual
+---
+
+## [The Effect](https://theeffectbook.net/ch-DescribingVariables.html)
+
+**Chapter 3 - Describing Variables**
+
+[Variable Types]{.underline}
+
+continuous - can take any value
+
+count - can't be negative, can't be fractional
+
+ordinal - take more or less (ex. low, medium, high, or elementary, middle, high school, and college
+
+categorical - belong in a "bucket"\
+binary categorical (ex. yes or no)
+
+qualitative - catch-all for everything else
+
+[Distribution]{.underline}
+
+bar graphs, histograms, density plots, etc.
+
+[Summarizing distributions]{.underline}
+
+mean, median, mode, etc.
+
+mean produces representative value, median produces representative observation
+
+[Variance]{.underline}
+
+1.  find the mean (ex. 2, 5, 5, 6, mean = 4.5)
+2.  subtract mean from value - variation around the mean (ex. -2.5, 0.5, 0.5, 1.5)
+3.  square each value (6.25, 0.25, 0.25, 2.25)
+4.  add them up! (9)
+5.  divide by number of observations minus 1. In our example, our sample variance is 9/(4-1) = 3
+
+the bigger the **variance**, the more variation there is in that variable.
+
+**IQR** (inter quartile range) = difference between 75th and 25th percentiles. It covers half your sample closest to the median. Not effected by big tail observations
+
+**90/10 ratio** = 90th percentile divided by 10th. Tells you how different the top and bottom of distribution are
+
+[Skew]{.underline}
+
+right skew = long right tail
+
+left skew = long left tail
+
+[Notation]{.underline}
+
+μ = mean
+
+σ = standard deviation
+
+ρ = correlation
+
+β = regression coefficients
+
+ε = “error terms”
+
+# [Regression and Inference](https://evalsp24.classes.andrewheiss.com/content/02-content.html)
+
+1.  Drawing lines
+2.  lines Greek letters, and regression
+3.  null worlds and statistical significance
+
+**Drawing lines**
+
+y = outcome variable (response variable, dependent variable, etc.) \
+the thing you want to explain or predict
+
+x = explanatory variable (predictor or independent variable)\
+thing you use to predict or explain
+
+Examples:
+
+| X                                                                   | Y                                |
+|---------------------------------------------------------------------|----------------------------------|
+| effect of smoking                                                   | on lung cancer                   |
+| does taking more AP classes                                         | improve college grades           |
+| effect of negative media coverage, revolutions, and economic growth | on genocide                      |
+| viewing history                                                     | to predict future shows to watch |
+
+2 purposes of regression:
+
+1.  PREDICTION, forecasts the future (the focus is on Y) - goal is to add effects
+2.  EXPLANATION, explain effect of x on y (focus is on X) - goal is to isolate one effect
+
+**How?**
+
+1.  plot X and Y
+2.  draw a line that approximates the relationship (and that would plausibly work for data not in the sample)
+3.  find mathy parts of the line
+4.  interpret the math
+
+residual errors - how far away from the line are we?
+
+OLS (ordinary least squares) Regression = minimizing the distance between all points and the best line of fit
+
+**Lines, Greek, and regression**
+
+y = mx + b
+
+stats use a sample to make inferences about a population
+
+[GREEK = the *truth*]{.underline}
+
+β = the truth,
+
+B̂ = our estimation of the truth
+
+[LATIN = actual data]{.underline}
+
+X = actual data
+
+x̄ = calculations from sample
+
+Data –\> calculation –\> estimate –\> truth
+
+**In stats, *y = mx + b* becomes y\^ = B0 + B 1x1 + e (*residual errors*)**
+
+```{r}
+name_of_model <- lm(<Y> ~ <X>, data = <DATA>)
+
+summary(name_of_model) #see model details
+
+library(broom)
+
+#convert model results to a data frame for plotting
+tidy(name_of_model)
+
+# convert model diagnostics to a data frame
+glance(name_of_model)
+```
+
+```{r}
+
+library(tidyverse)
+
+cookies_data <- tibble(
+  happiness = c(0.5, 2, 1, 2.5, 3, 1.5, 2, 2.5, 2, 3),
+  cookies = 1:10
+)
+
+happiness_model <- lm(happiness ~ cookies, data = cookies_data)
+
+tidy(happiness_model, conf.int = TRUE)
+
+glance(happiness_model)
+```
+
+[**Template for single variables:**]{.underline}
+
+**A one unit increase in X is *associated* with a β~1~ increase (or decrease) in Y, on average**
+
+ˆhappiness = β0 + β1cookies  + ε
+
+ˆhappiness = 1.1 + 0.16×cookies + ε
+
+[**Template for multiple variables:**]{.underline}
+
+y = β0 + β1x1 + β2x2 + ⋯ + βnxn + ε
+
+```{r}
+#~ = "as explained by"
+car_model <- lm(hwy ~ displ + cyl + drv,
+                data = mpg)
+
+tidy(car_model, conf.int = TRUE)
+```
+
+Categorical variables always have a "base case" (ex. 4 wheel drive above)
+
+[**Template for continuous variables:**]{.underline}
+
+***Holding everything else constant*****, a one unit increase in X is *associated* with a β~n~ increase (or decrease) in Y, on average**
+
+ˆhwy= 33.1+(−1.12)×displ+(−1.45)×cyl +(5.04)×drv:f+(4.89)×drv:r+ε
+
+*"On average, a one unit increase in cylinders is associated with 1.45 lower highway MPG, holding everything else constant"*
+
+[**Template for categorical variables:**]{.underline}
+
+***Holding everything else constant*****, Y is β~n~ units larger (or smaller) in X~n~, compared to X~omitted~, on average**
+
+ˆhwy= 33.1+(−1.12)×displ+(−1.45)×cyl +(5.04)×drv:f+(4.89)×drv:r+ε
+
+*"On average, front-wheel drive cars have 5.04 higher highway MPG than 4-wheel-drive cars, holding everything else constant"*
+
+lnYi=β0+β1Pi+β2Ai+β3SATi+β4PIi+ei
+
+```{r}
+#economists
+lnYi=α+βPi+γAi+δ1SATi+δ2PIi+ei
+
+#statiticians
+lnYi=β0+β1Pi+β2Ai+β3SATi+β4PIi+ei
+
+#R programming
+lm(log(income) ~ private + group_a + sat + parental_income, 
+   data = income_data)
+```
+
+**Null worlds and statistical significance**
+
+X→¯X→\^μ🤞 hopefully 🤞−−−−−−−−−−→μ\
+data –\> calculation –\> estimate –\> truth
+
+[Are action movies rates higher than comedies?]{.underline}
+
+```{r}
+install.packages("ggplot2movies")
+library(ggplot2movies)
+
+head(movies)
+
+```
+
+p-value = probability of seeing something in a world where the effect is 0
+
+If p \< 0.05, there's a good chance the estimate is not 0 and is "real" \
+If p \> 0.05, we can't say anything (*doesn't mean there's no effect! Just that we can't tell if there is*)
+
+**You can find a p-value for any Greek letter estimate, like β from a regression\
+**(in a null world, slope (B) would be 0)
+
+```{r}
+tidy(car_model, conf.int = TRUE)
+```

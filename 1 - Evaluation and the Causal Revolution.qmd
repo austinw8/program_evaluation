@@ -39,6 +39,38 @@ It's unethical to deny beneficial programs to all qualifying parties. Therefore,
 
 Make evaluations objective, transparent, and reproducible (should be included in pre-analysis plan
 
+## [The Effect](https://theeffectbook.net/)
+
+**Chapter 1**
+
+A good research question is well-defined, answerable, and understandable.
+
+Well-designed research is capable of answering the question it's trying to answer.
+
+Takeaway? Research design is hard!
+
+**Chapter 2**
+
+Theory = there's a *why* or *because* lurking around somewhere
+
+Data mining focuses on what's already in the data. Could be good or bad. It doesn't look at the *why*. It finds relationships, but doesn't tell us why the data is there.
+
+Beware false positives! Data science can help do this (ex. cross-validation, training and testing sets, etc.)
+
+Data mining isn't bad... it's just not the final step
+
+What's a good research question? Consider...
+
+-   potential results
+
+-   feasibility
+
+-   scale
+
+-   design
+
+-   keep it simple!
+
 ## [Statistics vs. data science - Hadley Wickham](https://imstat.org/2014/09/04/data-science-how-is-it-different-to-statistics%E2%80%89/)
 
 steps in a data science project
@@ -104,6 +136,4 @@ causation = correlation + time order + non-spuriousness
 **DAG (Directed Acyclic Graph)**\
 graphical model of the process that generates the data\
 maps your philosophical model\
-fancy math ("do-calculus") tells you what to control for to isolate and idnetify causation
-
-[**Class details**]{.underline}
+fancy math ("do-calculus") tells you what to control for to isolate and identify causation
