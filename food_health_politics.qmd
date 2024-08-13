@@ -1,0 +1,229 @@
+---
+title: "Food Health Politics"
+author: "Austin Mangelson"
+format: 
+  html:
+    code-fold: true
+    code-tools: true
+    embed-resources: true
+    toc: true
+editor: visual
+execute: 
+  warning: FALSE
+  message: FALSE
+---
+
+# Food Access and Mortality
+
+```{r load-food-mortality-data, echo=FALSE, results='hide'}
+
+library(tidyverse)
+library(broom)
+library(modelsummary)
+
+food_health <- read_csv("data/food_health_politics.csv") 
+```
+
+We're interested in looking at the relationships between food access, mortality, and politics. To do this, we look at data from three different sources:
+
+-   The USDA's [Food Environment Atlas](https://www.ers.usda.gov/data-products/food-environment-atlas/documentation/)
+-   The CDC's ["Compressed Mortality File 1999-2015 Series 20 No. 2U, 2016"](http://wonder.cdc.gov/cmf-icd10.html)
+-   2016 election results (found all over the internet)
+
+Each row in the data set is a US county. The main outcome we care about is `mortality_rate`, or the number of deaths per 100,000 people in a county between 2013-2015. Other interesting variables in the data set include:
+
+-   `pct_low_access_pop`: Percent of the county's population with low access to food
+-   `pct_children_low_access`: Percent of the county's children with low access to food
+-   `grocery_stores_per_1000`: Number of grocery stores in a county (per 1,000 residents)
+-   `snap_stores_per_1000`: Number of stores that accept SNAP (food stamps) in a county (per 1,000 residents)
+-   `fastfood_per_1000`: Number of fast food stores in a county (per 1,000 residents)
+-   `per_dem_2012`: Percent of the county that voted for Obama in 2012
+-   `per_dem_2016`: Percent of the county that voted for Clinton in 2016
+
+## Exploratory analysis
+
+### How related are mortality rate and access to food?
+
+```{r cor-mortality-food}
+
+cor(food_health$mortality_rate, food_health$pct_low_access_pop, use = "complete.obs")
+```
+
+There is a weak negative relationship between mortality rates and access to food. This means that as the percentage of a population with low access to food goes up, the mortality rate actually drops.
+
+Here's what that relationship looks like:
+
+```{r}
+ggplot(food_health, aes(x = pct_low_access_pop, y = mortality_rate)) +
+  geom_point() +   
+  geom_smooth(method = "lm", se = FALSE) +  
+  labs(x = "% of county with low access to food",         
+       y = "Mortality rate (per 100,000 residents)")
+```
+
+This is backwards from what you might expect, since it trends downward *(i.e. the mortality rate is lower in counties with a greater proportion of the population with low access to food)*.
+
+With such a weak correlation score, this might actually indicate that there is no relationship between these two variables.
+
+<br>
+
+### How related are mortality rate and the prevalence of fast food restaurants?
+
+```{r cor-mortality-fastfood}
+
+cor(food_health$mortality_rate, food_health$fastfood_per_1000, use = "complete.obs")
+```
+
+There is a very weak negative correlation between mortality rates and the prevalence of fast food. With a correlation score of -0.04, changes in one are not likely to reliably predict changes in the other.
+
+```{r plot-mortality-fastfood}
+
+ggplot(food_health, aes(x = fastfood_per_1000, y = mortality_rate)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "# of fast food stores (per 1,000 residents)",
+    y = "Mortality rate"
+  )
+```
+
+<br>
+
+### How related are mortality rate and the prevalence of SNAP stores per 1,000 residents?
+
+```{r cor-mortality-snap}
+cor(food_health$mortality_rate, food_health$snap_stores_per_1000, use = "complete.obs")
+```
+
+With a correlation score of 0.44, or 44%, there is a moderate positive relationship between mortality rate and the prevalence of SNAP stores within a county. This means that as one increases, the other tends to increase as well. However, this relationship is not particularly strong. With only a 44% correlation, other factors are likely to influence this relationship.
+
+```{r plot-mortality-snap}
+ggplot(food_health, aes(x = snap_stores_per_1000, y = mortality_rate)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "# of stores that accept SNAP (per 1,000 residents)",
+    y = "Mortality rate"
+  )
+```
+
+<br>
+
+### How related are mortality rate and the percent of the county that voted for Democrats in 2016?
+
+```{r cor-mortality-2016}
+cor(food_health$mortality_rate, food_health$per_dem_2016, use = "complete.obs")
+```
+
+There is a very weak negative correlation between mortality rates and the % of a county population that voted Democratic in 2016. This means that while there might be some relationship, it's not strong at all and likely the two variables do not influence one another.
+
+```{r plot-mortality-2016}
+ggplot(food_health, aes(x = per_dem_2016, y = mortality_rate)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "% of county that voted Democratic in 2016",
+    y = "Mortality rate"
+  )
+```
+
+<br>
+
+## Models
+
+### Does access to food predict mortality?
+
+```{r model-mortality-food}
+
+model_mortality_food <- lm(mortality_rate ~ pct_low_access_pop,                            data = food_health)  
+tidy(model_mortality_food, conf.int = TRUE)
+```
+
+```{r model-details-mortality-food}
+glance(model_mortality_food)
+```
+
+The intercept (845.3) tells us that were the % of the population who had low access to food be 0%, the mortality rate would be 845.3 deaths / 100,000. As the percent of low access food goes up by 1%, the mortality rate decreases by 124.5 deaths / 100,000 people.
+
+Again, this is backwards from what you'd expect---as the percent of low access goes up, mortality drops. Why might that be? Let's look at the reliability of this model.
+
+The R^2^ value is 0.026, suggesting that this model only explains about 2.6% of the variance, meaning this model does a very poor job of explaining the relationship between access to food and mortality. In other words, this is not a model to be trusted.
+
+<br>
+
+### Do more SNAP stores per person predict mortality?
+
+```{r model-mortality-snap}
+model_mortality_snap <- lm(mortality_rate ~ snap_stores_per_1000,                            data = food_health)  
+tidy(model_mortality_snap, conf.int = TRUE)
+```
+
+```{r model-details-mortality-snap}
+glance(model_mortality_snap)
+```
+
+This model suggests to us that for every 1% increase in the number of stores that accept SNAP, mortality rates will increase by 174.5 deaths / 100,000.
+
+This is a slightly more reliable model that our previous (low access to food model). However, the R^2^ value of 0.198 means that only 19.8% of the variance is explained here. That leaves more that 80% of this relationship unexplained by looking just at mortality rates and the number of SNAP stores.
+
+<br>
+
+### Do election results, access to food and SNAP stores, or child access to food predict mortality?
+
+```{r model-mortality-lots-of-things}
+model_mortality_snap_children_dem <- lm(mortality_rate ~ pct_low_access_pop + snap_stores_per_1000 + pct_children_low_access + per_dem_2016, data = food_health)  
+tidy(model_mortality_snap_children_dem, conf.int = TRUE)
+```
+
+```{r model-details-mortality-lots-of-things}
+glance(model_mortality_snap_children_dem)
+```
+
+We can say the following things about these results:
+
+-   The β1 coefficient for `pct_low_access_pop` indicates that taking into account the prevalence of SNAP stores, the percent of children with low access to food, and the % of the population that voted democratic in 2016, a 1% increase in the percent of the population with low access to food results in 468 fewer deaths per 100,000 people, on average.
+
+-   Controlling for all other variables, a 1% increase in SNAP stores per 1,000 people results in a 181.7 person increase in mortality rates.
+
+-   Children with access to food seems to be the largest influence on mortality rates, with a 1% increase resulting in a 1,271 person increase in mortality rates.
+
+-   Taking all other variables into account, a country with a higher % of the population voting democratic leads to a decrease (by 163 people / 100,000) in mortality rates.
+
+As always, the adjusted R^2^ shows us how well the model fits overall (again, we have to look at the adjusted R^2^ because we have more than one explanatory variable). In this case, the model explains 27.7% of the variation in college GPA, which is higher than any of the previous models (but not phenomenal, in the end).
+
+<br>
+
+### Mortality, controlling for state differences
+
+RUN A MODEL with some number of plausible independent/explanatory variables. Include `state` as one of them
+
+```{r model-mortality-state} # Add other explanatory variables here}
+
+model_with_state <- lm(mortality_rate ~ pct_low_access_pop + pct_children_low_access + state,
+                       data = food_health)  
+
+tidy(model_with_state, conf.int = TRUE) |> 
+  filter(!str_starts(term, "state"))
+```
+
+```{r model-state-mortality-lots-of-things}
+glance(model_with_state)
+```
+
+The intercept of 820.45 is the estimated value of the mortality rate when both the % of the population with low access to food and the the % of children to low access to food is 0. With such a small p-value, this is statistically significant.
+
+This next variable represents the percentage of the population with low access to food. The estimate of -277.97 suggests that for each 1% increase in the population with low access to food, the mortality rate decreases by approximately 278 people.
+
+Th final variable represents the percentage of children with low access to food. The estimate of 963.24 suggests that for each 1% increase in children with low access to food, the mortality rate increases by approximately 963 people.
+
+With an R^2^ value of 39%, this is once again a higher predicting model than the others we've seen before, but still not a highly reliable model.
+
+<br>
+
+## All models at the same time
+
+```{r everything-together}
+
+modelsummary(list(model_mortality_food, model_mortality_snap, model_mortality_snap_children_dem, model_with_state),       
+             coef_omit = "^state")
+```

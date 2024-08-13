@@ -1,0 +1,45 @@
+---
+title: "3 - Theories of Change and Logic Models"
+author: "Austin Mangelson"
+format: html
+editor: visual
+---
+
+## Reproducibility
+
+R \> Excel
+
+-   don't touch the raw data (document of you do)
+
+-   use self-documenting, reproducible code
+
+-   use open formats (.csv)
+
+## Program Theories
+
+Elements of a program:
+
+Inputs –\> Activities –\> Outputs –\> Outcomes
+
+1.  inputs (*money, people, time, etc.*)
+2.  activities (converts inputs into outputs (*things the program does*)
+3.  output (tangible goods/services produces by activities (*you have control over these)*
+4.  outcomes (what happens when the target population uses the outputs (*you don't have control over these)*
+
+Measuring between outputs and outcomes is the hardest part... and what we're here to do!
+
+**Program theory** = how and why an intervention causes change (why will inputs, activities, and outputs lead to certain outcomes?
+
+**Impact theory** = causes (activities) linked to effects (outcomes)
+
+Implicit theories (assumed) vs. Articulated theories (written down)
+
+## Logic Models & Results Chains
+
+Logic models more complicated and explicit than a results chain.
+
+Start with a results chain (make a list or giant bank of all components of a program), THEN connect them all together in a logic model
+
+[Impact theory vs logic model]{.underline}
+
+Impact theory is a very high level overview of desired outcomes. Logic model is more direct and explicit in what's effecting what. More focused on things you can measure and test.

@@ -26,11 +26,11 @@ sat_gpa <- read_csv("C:/Users/austi/OneDrive/Desktop/R/program_evaluation/data/s
 
 ### How well do SAT scores correlate with freshman GPA? 
 
-SAT scores and first-year college GPA are moderately positively correlated (r = 0.46). As one goes up, the other also tends to go up.
-
 ```{r}
 cor(sat_gpa$gpa_fy, sat_gpa$sat_total)
 ```
+
+SAT scores and first-year college GPA are moderately positively correlated (r = 0.46). As one goes up, the other also tends to go up.
 
 Here’s what that relationship looks like:
 

@@ -1,0 +1,168 @@
+---
+title: "Penguins - Regression Models"
+author: "Austin Mangelson"
+format: 
+  html:
+    code-fold: true
+    code-tools: true
+    embed-resources: true
+    toc: true
+editor: visual
+execute: 
+  warning: FALSE
+  message: FALSE
+---
+
+```{r setup, echo=FALSE, results='hide'}
+library(tidyverse)
+library(broom)
+library(modelsummary)
+
+theme_set(theme_bw())
+
+# Load penguins data
+penguins <- read_csv("data/penguins.csv")
+```
+
+Between 2007 and 2009, researchers collected data on penguins in three islands in the Palmer Archipelago in Antarctica: Biscoe, Dream, and Torgersen. The `penguins` dataset has data for 342 penguins from 3 different species: Chinstrap, Gentoo, and Adélie. It includes the following variables:
+
+-   `species`: The penguin's species (Chinstrap, Gentoo, and Adélie)
+-   `island`: The island where the penguin lives (Biscoe, Dream, and Torgersen)
+-   `bill_length_mm`: The length of the penguin's bill, in millimeters (distance from the penguin's face to the tip of the bill)
+-   `bill_depth_mm`: The depth of the penguin's bill, in millimeters (height of the bill; distance from the bottom of the bill to the top of the bill)
+-   `flipper_length_mm`: The length of the penguin's flippers, in millimeters
+-   `body_mass_g`: The weight of the penguin, in grams
+-   `sex`: The sex of the penguin
+-   `year`: The year the observation was made
+
+## Exploratory analysis
+
+What is the relationship between penguin weight and bill depth? This plot shows some initial trends:
+
+```{r}
+ggplot(penguins, aes(x = bill_depth_mm, y = body_mass_g)) +
+  geom_point()
+```
+
+Make a new plot that colors these points by species. What can you tell about the relationship between bill depth and penguin weight?
+
+```{r plot-penguin-weight-depth-by-species}
+ggplot(penguins, aes(x = bill_depth_mm, y = body_mass_g, color = species)) +
+  geom_point()
+```
+
+There appears to be a moderate positive correlation between bill depth and body mass: as one increases, so does the other.
+
+Add a `geom_smooth()` layer to the plot and make sure it uses a straight line (hint: include `method="lm"` in the function). What does this tell you about the relationship between bill depth and body mass?
+
+```{r plot-penguin-weight-depth-by-species-with-lines}
+ggplot(penguins, aes(x = bill_depth_mm, y = body_mass_g, color = species)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+Change the plot so that there's a single line for all the points instead of one line per species. How does the slope of this single line differ from the slopes of the species specific lines? ***Why??***
+
+```{r plot-penguin-weight-depth-by-species-with-one-line}
+ggplot(penguins, aes(x = bill_depth_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm")
+```
+
+This changes the relationship to a moderately strong negative correlation because it's taking all penguin species into consideration.
+
+What is the relationship between flipper length and body mass? Make another plot with `flipper_length_mm` on the x-axis, `body_mass_g` on the y-axis, and points colored by `species`.
+
+```{r}
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm")
+```
+
+Facet the plot by island (`island`)
+
+```{r}
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
+  facet_wrap(~island)
+```
+
+<br>
+
+## Models
+
+### Predicting weight with bill depth
+
+Does bill depth predict penguin weight?
+
+```{r model-depth-weight}
+model_depth_weight <- lm(body_mass_g ~ bill_depth_mm,
+                         data = penguins)
+
+tidy(model_depth_weight, conf.int = TRUE)
+
+ggplot(penguins, aes(x = bill_depth_mm, y = body_mass_g)) +
+  geom_point()
+```
+
+```{r model-details-depth-weight}
+glance(model_depth_weight)
+```
+
+Interpretation of coefficients and results:
+
+-   The intercept is telling us the average penguin will weigh 7,488.65 grams when the bill depth in mm is 0. This is a nonsensical number, and can be ignored.
+
+-   The slope is -191.64, telling us that a 1 percentile increase in bill depth results in a 191.64 decrease in penguin body mass (grams).
+
+We know this is a statistically significant association given the p-value being incredibly low. However, with an R^2^ value of only 22%, this is not a wildly accurate model.
+
+*Note: This is taking into consideration all 3 penguin species and NOT analyzing each independently.*
+
+<br>
+
+### Predicting weight with bill depth and flipper length
+
+RUN A MODEL that predicts weight with bill depth and flipper length.
+
+```{r model-weight-depth-flipper}
+model_weight_bill_flipper <- lm(body_mass_g ~ bill_depth_mm + flipper_length_mm, data = penguins)
+tidy(model_weight_bill_flipper, conf.int = TRUE)
+
+```
+
+Again, the intercept is meaningless since no penguin has a bill depth or flipper length of zero. The slope for bill_depth (or β1) is 22.63, so a one percentile increase in the penguins bill depth in mm is associated with a 22.63g increase in weight, on average, controlling for flipper length. Meanwhile, a one percentile increase in the flipper length in mm (β2) is associated with a 51.54g increase in penguin weight, on average, controlling for bill depth.
+
+It seems like flipper length would be a better predictor of penguin weight than it's bill depth would be.
+
+```{r model-details-weight-depth-flipper}
+glance(model_weight_bill_flipper)
+```
+
+The adjusted R^2^ (which we need to look at because we’re using more than one explanatory variable) is 0.76, which means that this model explains 76% of the variation in penguin weight.
+
+### Predicting weight with bill depth, flipper length, and species
+
+RUN A MODEL that predicts weight with bill depth, flipper length, and species.
+
+```{r model-weight-depth-flipper-species}
+model_weight_depth_flipper_species <- lm(body_mass_g ~ bill_depth_mm + flipper_length_mm + species, data = penguins)
+tidy(model_weight_depth_flipper_species, conf.int = TRUE)
+```
+
+Again, the intercept is meaningless since no penguin has a bill depth or flipper length of zero, or doesn't belong to a species.
+
+The slope for bill_depth (or β1) is 182.36, so a one percentile increase in the penguins bill depth in mm is associated with a 182.36g increase in weight, on average, controlling for flipper length and species. Meanwhile, a one percentile increase in the flipper length in mm (β2) is associated with a 25.7g increase in penguin weight, on average, controlling for bill depth and species.
+
+The Adelie penguin species is our control here, so if we control for bill depth and flipper length, Chinstrap penguins have weight 131.97g less on average and Gentoo penguins weight 1288.97g more on average than an Adelie penguin.
+
+```{r model-details-weight-depth-flipper-species}
+glance(model_weight_depth_flipper_species)
+```
+
+## All models at the same time
+
+```{r all-penguin-models}
+
+modelsummary(list(model_depth_weight, model_weight_bill_flipper, model_weight_depth_flipper_species))
+```
