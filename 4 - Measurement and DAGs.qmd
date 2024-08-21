@@ -35,10 +35,10 @@ THIS is what we're after
 ## Causal Models
 
 **Experimental data** - you have control over which units get treatment\
-vs. \
+vs.\
 **Observational data** - you don't have control
 
-Which kind lets you prove causation? Can you prove causation with just observational data? \
+Which kind lets you prove causation? Can you prove causation with just observational data?\
 YES. But it's controversial.
 
 DAG (*Directed Acyclic Graph*) - causal diagram
@@ -91,10 +91,10 @@ Adjust/condition the other paths
 
 x causes y, but z also causes both x and y. Z *confounds* the x –\> y association
 
-Paths between x and y? \
+Paths between x and y?\
 x –\> Y\
 x \<-- z —\> Y\
-Z is a backdoor \
+Z is a backdoor\
 X and Y are "d-connected" because associations can pass through Z
 
 ![](images/clipboard-1669197412.png){width="335"}

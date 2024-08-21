@@ -277,7 +277,7 @@ In the interest of space, we will not verify all these implied independencies, b
     cor(mosquito_nets$income, mosquito_nets$resistance)
     ```
 
--   Malaria risk⊥Household members | Health, Income, Bed net use, Temperature: (Read as *“Malaria risk is independent of house member count given health, income, bed net use, and temperature”*.) Malaria risk should be independent of the number of household members given similar levels of health, income, mosquito net use, and nighttime temperatures. We cannot use `cor()` to test this implication, since there are many variables involved, but we can use a regression model to check if the number of household members is significantly related to malaria risk. It is not significant (t=−0.17, p=0.863), which means the two are independent, as expected.
+-   Malaria risk⊥Household members \| Health, Income, Bed net use, Temperature: (Read as *“Malaria risk is independent of house member count given health, income, bed net use, and temperature”*.) Malaria risk should be independent of the number of household members given similar levels of health, income, mosquito net use, and nighttime temperatures. We cannot use `cor()` to test this implication, since there are many variables involved, but we can use a regression model to check if the number of household members is significantly related to malaria risk. It is not significant (t=−0.17, p=0.863), which means the two are independent, as expected.
 
     ```{r}
     lm(malaria_risk ~ household + health + income + net + temperature,
