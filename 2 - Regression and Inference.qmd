@@ -72,7 +72,7 @@ left skew = long left tail
 
 **Drawing lines**
 
-y = outcome variable (response variable, dependent variable, etc.) \
+y = outcome variable (response variable, dependent variable, etc.)\
 the thing you want to explain or predict
 
 x = explanatory variable (predictor or independent variable)\
@@ -159,7 +159,7 @@ glance(happiness_model)
 
 **A one unit increase in X is *associated* with a β~1~ increase (or decrease) in Y, on average**
 
-ˆhappiness = β0 + β1cookies  + ε
+ˆhappiness = β0 + β1cookies + ε
 
 ˆhappiness = 1.1 + 0.16×cookies + ε
 
@@ -224,7 +224,7 @@ head(movies)
 
 p-value = probability of seeing something in a world where the effect is 0
 
-If p \< 0.05, there's a good chance the estimate is not 0 and is "real" \
+If p \< 0.05, there's a good chance the estimate is not 0 and is "real"\
 If p \> 0.05, we can't say anything (*doesn't mean there's no effect! Just that we can't tell if there is*)
 
 **You can find a p-value for any Greek letter estimate, like β from a regression\

@@ -195,8 +195,6 @@ As always, the adjusted R^2^ shows us how well the model fits overall (again, we
 
 ### Mortality, controlling for state differences
 
-RUN A MODEL with some number of plausible independent/explanatory variables. Include `state` as one of them
-
 ```{r model-mortality-state} # Add other explanatory variables here}
 
 model_with_state <- lm(mortality_rate ~ pct_low_access_pop + pct_children_low_access + state,

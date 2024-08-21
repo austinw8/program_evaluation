@@ -24,7 +24,7 @@ sat_gpa <- read_csv("C:/Users/austi/OneDrive/Desktop/R/program_evaluation/data/s
 
 # Exploratory Questions
 
-### How well do SAT scores correlate with freshman GPA? 
+### How well do SAT scores correlate with freshman GPA?
 
 ```{r}
 cor(sat_gpa$gpa_fy, sat_gpa$sat_total)
@@ -46,7 +46,7 @@ ggplot(sat_gpa, aes(x = gpa_fy, y = sat_total)) +
 
 <br>
 
-### How well does high school GPA correlate with freshman GPA? 
+### How well does high school GPA correlate with freshman GPA?
 
 ```{r}
 cor(sat_gpa$gpa_fy, sat_gpa$gpa_hs)
@@ -68,7 +68,7 @@ ggplot(sat_gpa, aes(x = gpa_hs, y = gpa_fy)) +
 
 <br>
 
-### Is the correlation between SAT scores and freshman GPA stronger for men or for women? 
+### Is the correlation between SAT scores and freshman GPA stronger for men or for women?
 
 ```{r}
 sat_gpa |> 
@@ -78,7 +78,7 @@ sat_gpa |>
 
 We can calculate the correlation between SAT scores and freshman GPA for both sexes to see if there are any differences. The correlation is slightly stronger for women, but it’s hardly noticeable (r = 0.49 for females, r = 0.48 for males)
 
-This is apparent visually if we include a trendline for each sex. The lines are essentially parallel:
+This is apparent visually if we include a trend-line for each sex. The lines are essentially parallel:
 
 ```{r}
 ggplot(sat_gpa, aes(x = gpa_hs, y = gpa_fy, color = sex)) +
@@ -89,7 +89,7 @@ ggplot(sat_gpa, aes(x = gpa_hs, y = gpa_fy, color = sex)) +
 
 <br>
 
-### Is the correlation between high school GPA and freshman GPA stronger for men or for women? 
+### Is the correlation between high school GPA and freshman GPA stronger for men or for women?
 
 ```{r}
 sat_gpa |> 
@@ -103,7 +103,7 @@ There is a noticeable difference between men and women in the correlation betwee
 
 # Models
 
-### Do SAT scores predict freshman GPAs? 
+### Do SAT scores predict freshman GPAs?
 
 We can build a model that predicts college GPAs (our outcome variable, or dependent variable) using SAT scores (our main explanatory variable):
 
@@ -234,7 +234,7 @@ glance(model_sat_hs_sex)
 
 <br>
 
-### Which model best predicts freshman GPA? How do you know? 
+### Which model best predicts freshman GPA? How do you know?
 
 Adjusted R^2^ generally shows the strength of a model’s fit, or how well the model will predict future values of the outcome variable. If we compare the adjusted R^2^ for each of the models, we see that the “best” model is the last one.
 

@@ -1,0 +1,130 @@
+---
+title: "4 - Measurement and DAGs"
+author: "Austin Mangelson"
+format: html
+editor: visual
+---
+
+## Abstraction, Stretching, and Validity
+
+Can measure: **inputs, activities, and outputs** (# of citations, % increase in grades, etc.)
+
+Hard to measure (but also what we're after): **outcomes** (ex. commitment to school, reduced risk factors, etc.)
+
+How do you measure abstract outcomes? Move up the ladder of abstraction
+
+Ladder of abstraction for witches:
+
+1.  mammal
+    1.  enmagicked (*trolls, elves, gods/goddesses*)
+        1.  female (*arwen, winky, athena*)
+            1.  human
+                1.  young (*salem witch trials*)
+                    1.  student (*hermione granger, sabrina spellman*)
+                2.  old (*elphaba, halloween decorations*)
+
+**Outcome variable:** thing you're measuring
+
+**Outcome change**: change in thing you're measuring over time
+
+**Program effect**: change in thing you're measuring over time because of the program\
+THIS is what we're after
+
+------------------------------------------------------------------------
+
+## Causal Models
+
+**Experimental data** - you have control over which units get treatment\
+vs. \
+**Observational data** - you don't have control
+
+Which kind lets you prove causation? Can you prove causation with just observational data? \
+YES. But it's controversial.
+
+DAG (*Directed Acyclic Graph*) - causal diagram
+
+No function to show causation.... it's more philosophical. DAGs help with that
+
+Have a cyclical model? Split nodes into different nodes based on time\
+Ex. Wealth(t-1) –\> Power(t) –\> Wealth(t)
+
+**Example**:
+
+What is the causal effect of an additional year of education on earnings?
+
+1.  *List variables (that cause one, the other, or both)*
+
+2.  *simplify*
+
+3.  *connect arrows*
+
+4.  *use logic and math to determine which nodes and arrows to measure*
+
+------------------------------------------------------------------------
+
+1.  List variable
+
+location, ability, demographics, socioeconomic status, birth year, compulsory schooling laws, job connections,
+
+2.  ***simplify***
+
+location, ability, demographics, socioeconomic status, birth year, compulsory schooling laws, job connections = ***background***
+
+3.  connect arrows
+
+![](images/clipboard-2015746528.png){width="321"}
+
+------------------------------------------------------------------------
+
+## Paths, Doors, and Adjustment
+
+All nodes are related... there's correlation between all... but WE care about Edu –\> Earn. What do we do about the other nodes?
+
+"A causal effect is *identified* if the association between treatment and outcome is properly stripped and isolated"\
+Adjust/condition the other paths
+
+**3 Types of Associations:**
+
+1.  **Confounding** (common cause)\
+    DO control for Z
+2.  ![](images/clipboard-3111367541.png){width="175"}
+
+x causes y, but z also causes both x and y. Z *confounds* the x –\> y association
+
+Paths between x and y? \
+x –\> Y\
+x \<-- z —\> Y\
+Z is a backdoor \
+X and Y are "d-connected" because associations can pass through Z
+
+![](images/clipboard-1669197412.png){width="335"}
+
+money –\> margin\
+money \<-- quality –\> margin\
+quality is a backdoor - we need to close the backdoor by adjusting for Z ("hold quality constant")
+
+Once we control for Z, X and Y are now "d-separated" and the association is isolated
+
+1.  **Causation** (mediation)\
+    Do NOT control for Z
+    1.  ![](images/clipboard-1987364139.png){width="167"}
+
+X causes Y\
+X causes Z which causes Y
+
+Should you control for Z? NO!
+
+1.  **Collision** (selection / endogeneity)\
+    do NOT control for Z
+    1.  ![](images/clipboard-133650806.png){width="181"}
+
+X causes Z\
+Y causes Z
+
+Should you control for Z? NO!
+
+![](images/clipboard-3039033011.png){width="359"}
+
+Colliders can create fake causal effects OR hide real causal effects
+
+Another way to look at this = *selection bias*
